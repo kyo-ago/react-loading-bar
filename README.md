@@ -1,18 +1,16 @@
 # React Loading Bar
 
-[![Build Status](https://travis-ci.org/lonelyclick/react-loading-bar.svg?branch=master)](https://travis-ci.org/lonelyclick/react-loading-bar)
-
 ## Usage
 
 ```
-  npm install react-loading-bar --save
+  npm install @kyo_ago/react-loading-bar --save
 ```
 
 
 ```
 import React, { Component } from 'react'
-import Loading from 'react-loading-bar'
-import 'react-loading-bar/dist/index.css'
+import Loading from '@kyo_ago/react-loading-bar'
+import '@kyo_ago/react-loading-bar/dist/index.css'
 
 export default class LoadingExample extends Component {
   state = {

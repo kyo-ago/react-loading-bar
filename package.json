@@ -1,5 +1,5 @@
 {
-  "name": "react-loading-bar",
+  "name": "@kyo_ago/react-loading-bar",
   "version": "1.0.0",
   "description": "react loading bar",
   "main": "dist/index.js",
