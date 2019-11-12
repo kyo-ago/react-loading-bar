@@ -1,21 +1,20 @@
 'use strict'
 
 const path = require('path')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
-const cssPath = '/[name].css'
 const deployLocation = 'dist'
 
 module.exports = {
+  mode: 'production',
   entry: {
     index: './src/index.js'
   },
-  colors: true,
   resolve: {
-    extensions: ['', '.js', '.jsx']
+    extensions: ['.js', '.jsx']
   },
   output: {
-    filename: '/[name].js',
+    filename: '[name].js',
     path: path.join(__dirname, deployLocation),
     library: 'ReactLoadingBar',
     libraryTarget: 'umd'
@@ -35,28 +34,52 @@ module.exports = {
     }
   },
   module: {
-    loaders: [
+    rules: [
       {
-        test: /\.js$/, exclude: /node_modules/, loader: 'babel?stage=0'
+        test: /\.jsx?$/,
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              presets: [
+                '@babel/preset-env',
+                '@babel/react'
+              ]
+            }
+          }
+        ]
       },
       {
-        test: /\.jsx$/, exclude: /node_modules/, loader: 'babel?stage=0'
-      },
-      {
-        test: /\.css$/,
-        /* eslint-disable max-len */
-        loader: ExtractTextPlugin.extract('style-loader', 'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader')
-        /* eslint-enable max-len */
+        test: /\.css/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          {
+            loader: 'css-loader',
+            options: {
+              modules: {
+                localIdentName: '[path][name]__[local]--[hash:base64:5]',
+              },
+              importLoaders: 1,
+            },
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              plugins: [
+                require('autoprefixer')({
+                  grid: true
+                }),
+                require('precss')
+              ]
+            }
+          }
+        ]
       }
     ]
   },
   plugins: [
-    new ExtractTextPlugin(cssPath)
-  ],
-  postcss: [
-    require('autoprefixer'),
-    require('postcss-color-rebeccapurple'),
-    require('precss'),
-    require('postcss-reporter')
+    new MiniCssExtractPlugin({
+      filename: '[name].css'
+    })
   ]
 }

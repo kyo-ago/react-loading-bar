@@ -1,30 +1,20 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types';
+import * as React from 'react'
 import shallowEqual from 'shallowequal'
 
 import styles from './Loading.css'
 
-export default class Loading extends Component {
-  static propTypes = {
-    change: PropTypes.bool,
-    color: PropTypes.string.isRequired,
-    show: PropTypes.bool,
-    showSpinner: PropTypes.bool
+class Loading extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      size: 0,
+      disappearDelayHide: false, // when dispappear, first transition then display none
+      percent: 0,
+      appearDelayWidth: 0 // when appear, first display block then transition width
+    }
   }
 
-  static defaultProps = {
-    change: true,
-    showSpinner: true
-  }
-
-  state = {
-    size: 0,
-    disappearDelayHide: false, // when dispappear, first transition then display none
-    percent: 0,
-    appearDelayWidth: 0 // when appear, first display block then transition width
-  }
-
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     const { show, change } = nextProps
 
     if (!change) {
@@ -132,7 +122,7 @@ export default class Loading extends Component {
           <div
             className={styles.bar}
             style={this.getBarStyle()}>
-            <div className={styles.peg}></div>
+            <div className={styles.peg} />
           </div>
         </div>
         {this.props.showSpinner &&
@@ -147,3 +137,10 @@ export default class Loading extends Component {
     )
   }
 }
+
+Loading.defaultProps = {
+  change: true,
+  showSpinner: true
+}
+
+export default Loading
